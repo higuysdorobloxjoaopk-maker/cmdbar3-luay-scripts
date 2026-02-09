@@ -1,0 +1,318 @@
+-- ==========================================================
+-- LUAY cmdbar3
+-- (esse objeto mesmo não parecendo tem sim direitos do author pesso pelo menos um comentário de créditos em uma variação ou copia desse script se possível muito obrigado)
+-- ==========================================================
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local ParentUI = Players.LocalPlayer:WaitForChild("PlayerGui")
+
+if ParentUI:FindFirstChild("Cmdbar3_FixedList") then
+	ParentUI.Cmdbar3_FixedList:Destroy()
+end
+
+local inst_1 = Instance.new("ScreenGui")
+inst_1.Name = "Cmdbar3_FixedList"
+inst_1.ResetOnSpawn = false
+inst_1.Parent = ParentUI
+
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Size = UDim2.new(0, 260, 0, 60)
+MainFrame.Position = UDim2.new(0.5, -130, 0.4, 0)
+MainFrame.BackgroundTransparency = 1
+MainFrame.ZIndex = 2
+MainFrame.Parent = inst_1
+
+local TopBar = Instance.new("Frame")
+TopBar.Name = "TopBar"
+TopBar.Size = UDim2.new(1, 0, 0, 27)
+TopBar.BackgroundColor3 = Color3.fromRGB(120, 110, 230)
+TopBar.BorderSizePixel = 0
+TopBar.ZIndex = 3
+TopBar.Parent = MainFrame
+
+local Title = Instance.new("TextLabel")
+Title.Size = UDim2.new(0, 100, 1, 0)
+Title.Position = UDim2.new(0, 10, 0, 0)
+Title.BackgroundTransparency = 1
+Title.Text = "Cmdbar3"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextSize = 16
+Title.Font = Enum.Font.SourceSansBold
+Title.TextXAlignment = Enum.TextXAlignment.Left
+Title.ZIndex = 4
+Title.Parent = TopBar
+
+local Body = Instance.new("Frame")
+Body.Name = "Body"
+Body.Size = UDim2.new(1, 0, 0, 33)
+Body.Position = UDim2.new(0, 0, 0, 27)
+Body.BackgroundColor3 = Color3.fromRGB(63, 63, 63)
+Body.BorderSizePixel = 0
+Body.ZIndex = 3
+Body.Parent = MainFrame
+
+-- BOTÕES
+
+-- Minimizar
+local MinFrame = Instance.new("Frame")
+MinFrame.Size = UDim2.new(0, 20, 0, 20)
+MinFrame.Position = UDim2.new(1, -50, 0, 4)
+MinFrame.BackgroundColor3 = Color3.fromRGB(52, 52, 52)
+MinFrame.BackgroundTransparency = 0.4
+MinFrame.ZIndex = 3
+MinFrame.Parent = TopBar
+Instance.new("UICorner", MinFrame).CornerRadius = UDim.new(0, 4)
+
+local MinButton = Instance.new("TextButton")
+MinButton.Size = UDim2.new(1, 0, 1, 0)
+MinButton.BackgroundTransparency = 1
+MinButton.Text = "-"
+MinButton.TextColor3 = Color3.new(1,1,1)
+MinButton.TextSize = 14
+MinButton.Font = Enum.Font.SourceSansBold
+MinButton.ZIndex = 5
+MinButton.Parent = MinFrame
+
+-- Fechar
+local CloseFrame = Instance.new("Frame")
+CloseFrame.Size = UDim2.new(0, 20, 0, 20)
+CloseFrame.Position = UDim2.new(1, -25, 0, 4)
+CloseFrame.BackgroundColor3 = Color3.fromRGB(52, 52, 52)
+CloseFrame.BackgroundTransparency = 0.4
+CloseFrame.ZIndex = 3
+CloseFrame.Parent = TopBar
+Instance.new("UICorner", CloseFrame).CornerRadius = UDim.new(0, 4)
+
+local CloseButton = Instance.new("TextButton")
+CloseButton.Size = UDim2.new(1, 0, 1, 0)
+CloseButton.BackgroundTransparency = 1
+CloseButton.Text = "X"
+CloseButton.TextColor3 = Color3.new(1,1,1)
+CloseButton.TextSize = 12
+CloseButton.Font = Enum.Font.SourceSansBold
+CloseButton.ZIndex = 5
+CloseButton.Parent = CloseFrame
+
+-- INPUT E EXECUTE
+
+-- commandBox
+local InputBox = Instance.new("TextBox")
+InputBox.Size = UDim2.new(0, 170, 0, 25)
+InputBox.Position = UDim2.new(0, 5, 0, 4)
+InputBox.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+InputBox.TextColor3 = Color3.new(1,1,1)
+InputBox.PlaceholderText = "fly"
+InputBox.Text = ""
+InputBox.Font = Enum.Font.SourceSans
+InputBox.TextSize = 14
+InputBox.TextXAlignment = Enum.TextXAlignment.Left
+InputBox.ClearTextOnFocus = false
+InputBox.ZIndex = 5
+InputBox.Parent = Body
+Instance.new("UICorner", InputBox).CornerRadius = UDim.new(0, 4)
+Instance.new("UIPadding", InputBox).PaddingLeft = UDim.new(0, 5)
+
+-- Execute
+local ExecFrame = Instance.new("Frame")
+ExecFrame.Size = UDim2.new(0, 70, 0, 25)
+ExecFrame.Position = UDim2.new(1, -75, 0, 4)
+ExecFrame.BackgroundColor3 = Color3.fromRGB(131, 114, 252)
+ExecFrame.ZIndex = 3
+ExecFrame.Parent = Body
+Instance.new("UICorner", ExecFrame).CornerRadius = UDim.new(0, 4)
+
+local ExecuteButton = Instance.new("TextButton")
+ExecuteButton.Size = UDim2.new(1, 0, 1, 0)
+ExecuteButton.BackgroundTransparency = 1
+ExecuteButton.Text = "EXECUTE"
+ExecuteButton.TextColor3 = Color3.new(1,1,1)
+ExecuteButton.Font = Enum.Font.SourceSansBold
+ExecuteButton.TextSize = 12
+ExecuteButton.ZIndex = 5
+ExecuteButton.Parent = ExecFrame
+
+-- LISTA DE comandos
+
+local ListFrame = Instance.new("Frame")
+ListFrame.Name = "ListFrame"
+ListFrame.Size = UDim2.new(0, 260, 0, 110) 
+ListFrame.Position = UDim2.new(0, 0, 1, 2) 
+ListFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+ListFrame.Visible = false
+ListFrame.ZIndex = 3
+ListFrame.Parent = MainFrame
+
+local ListCorner = Instance.new("UICorner")
+ListCorner.CornerRadius = UDim.new(0, 3)
+ListCorner.Parent = ListFrame
+
+local SideBar = Instance.new("Frame")
+SideBar.Size = UDim2.new(0, 5, 1, 0)
+SideBar.Position = UDim2.new(0, 0, 0, 0)
+SideBar.BackgroundColor3 = Color3.fromRGB(120, 110, 230)
+SideBar.ZIndex = 3
+SideBar.Parent = ListFrame
+Instance.new("UICorner", SideBar).CornerRadius = UDim.new(0, 4)
+
+-- Scrolling Frame
+local ScrollingList = Instance.new("ScrollingFrame")
+ScrollingList.Size = UDim2.new(1, -15, 1, -10)
+ScrollingList.Position = UDim2.new(0, 10, 0, 5)
+ScrollingList.BackgroundTransparency = 1
+ScrollingList.BorderSizePixel = 0
+ScrollingList.ScrollBarThickness = 2
+ScrollingList.ScrollBarImageColor3 = Color3.fromRGB(120, 110, 230)
+ScrollingList.CanvasSize = UDim2.new(0, 0, 0, 0)
+ScrollingList.ZIndex = 5
+ScrollingList.Parent = ListFrame
+
+local dragging, dragInput, dragStart, startPos
+TopBar.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		dragging = true
+		dragStart = input.Position
+		startPos = MainFrame.Position
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then dragging = false end
+		end)
+	end
+end)
+TopBar.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+		dragInput = input
+	end
+end)
+UserInputService.InputChanged:Connect(function(input)
+	if input == dragInput and dragging then
+		local delta = input.Position - dragStart
+		MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+	end
+end)
+
+-- Minimizar
+local minimized = false
+MinButton.MouseButton1Click:Connect(function()
+	minimized = not minimized
+	if minimized then
+		Body.Visible = false
+		ListFrame.Visible = false
+		MainFrame.Size = UDim2.new(0, 260, 0, 27)
+		MinButton.Text = "+"
+	else
+		Body.Visible = true
+		MainFrame.Size = UDim2.new(0, 260, 0, 60)
+		MinButton.Text = "-"
+	end
+end)
+
+-- fechar
+CloseButton.MouseButton1Click:Connect(function() inst_1:Destroy() end)
+
+-- Carregar Comandos
+local Commands = {}
+local success, result = pcall(function()
+	return loadstring(game:HttpGet("https://raw.githubusercontent.com/SEUUSUARIO/cmdbar/main/commands.lua"))()
+end)
+if success and type(result) == "table" then
+	Commands = result
+else
+	-- Comandos de Teste
+	Commands = {
+		{Name = "fly", Run = function() print("Fly") end},
+		{Name = "noclip", Run = function() print("Noclip") end},
+		{Name = "speed", Run = function() print("Speed") end},
+		{Name = "infiniteyield", Run = function() print("IY") end},
+		{Name = "dex", Run = function() print("Dex") end},
+		{Name = "esp", Run = function() print("ESP") end},
+		{Name = "btools", Run = function() print("Btools") end},
+		{Name = "god", Run = function() print("God") end},
+		{Name = "reset", Run = function() print("Reset") end},
+		{Name = "rejoin", Run = function() print("Rejoin") end}
+	}
+end
+
+local function runCmd(name)
+	for _, cmd in ipairs(Commands) do
+		if cmd.Name == name then
+			cmd.Run()
+			InputBox.Text = ""
+			ListFrame.Visible = false
+			return
+		end
+	end
+end
+
+
+InputBox:GetPropertyChangedSignal("Text"):Connect(function()
+	local txt = InputBox.Text:lower():gsub("^;", "")
+	
+	
+	for _, v in ipairs(ScrollingList:GetChildren()) do
+		if v:IsA("Frame") then v:Destroy() end
+	end
+
+	if txt == "" or minimized then
+		ListFrame.Visible = false
+		return
+	end
+
+	local matches = {}
+	for _, cmd in ipairs(Commands) do
+		if cmd.Name:sub(1, #txt) == txt then
+			table.insert(matches, cmd)
+		end
+	end
+
+	if #matches > 0 then
+		ListFrame.Visible = true
+		local yOffset = 0
+		
+		for _, cmd in ipairs(matches) do
+			
+			local ItemFrame = Instance.new("Frame")
+			ItemFrame.Size = UDim2.new(1, -5, 0, 22)
+			ItemFrame.Position = UDim2.new(0, 0, 0, yOffset)
+			ItemFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+			ItemFrame.BackgroundTransparency = 0.5
+			ItemFrame.ZIndex = 3
+			ItemFrame.Parent = ScrollingList
+			
+			
+			Instance.new("UICorner", ItemFrame).CornerRadius = UDim.new(0, 6)
+			
+		  
+			local ItemBtn = Instance.new("TextButton")
+			ItemBtn.Size = UDim2.new(1, 0, 1, 0)
+			ItemBtn.BackgroundTransparency = 1
+			ItemBtn.Text = "  ;" .. cmd.Name
+			ItemBtn.TextColor3 = Color3.new(1, 1, 1)
+			ItemBtn.TextSize = 12
+			ItemBtn.Font = Enum.Font.SourceSans
+			ItemBtn.TextXAlignment = Enum.TextXAlignment.Left
+			ItemBtn.ZIndex = 5
+			ItemBtn.Parent = ItemFrame
+			
+			ItemBtn.MouseButton1Click:Connect(function()
+				runCmd(cmd.Name)
+			end)
+			
+			yOffset = yOffset + 25
+		end
+		
+		-- Atualiza o tamanho interno do scroll
+		ScrollingList.CanvasSize = UDim2.new(0, 0, 0, yOffset)
+	else
+		ListFrame.Visible = false
+	end
+end)
+
+-- Execução
+ExecuteButton.MouseButton1Click:Connect(function()
+	runCmd(InputBox.Text:lower():gsub("^;", ""))
+end)
+
+InputBox.FocusLost:Connect(function(enter)
+	if enter then runCmd(InputBox.Text:lower():gsub("^;", "")) end
+end)
