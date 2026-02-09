@@ -213,7 +213,7 @@ CloseButton.MouseButton1Click:Connect(function() inst_1:Destroy() end)
 -- Carregar Comandos
 local Commands = {}
 local success, result = pcall(function()
-	return loadstring(game:HttpGet(".........."))()
+	return loadstring(game:HttpGet("https://raw.githubusercontent.com/higuysdorobloxjoaopk-maker/cmdbar3-luay-scripts/refs/heads/main/commands.luay"))()
 end)
 if success and type(result) == "table" then
 	Commands = result
