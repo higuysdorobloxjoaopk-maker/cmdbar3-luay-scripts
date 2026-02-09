@@ -6,7 +6,7 @@ mais um script da luay né?
 -------------------------------------------------------------------------------------------
 
 
-Copyright (c) 2026 JoãoPK
+Copyright (c) 2026 LUAY
 
 Este software é protegido por direitos autorais.
 
