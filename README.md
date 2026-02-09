@@ -4,6 +4,8 @@ mais um script da luay né?
 📃 licença da luay sobre esse Script👀
 
 -------------------------------------------------------------------------------------------
+
+
 Copyright (c) 2026 JoãoPK
 
 Este software é protegido por direitos autorais.
@@ -37,6 +39,8 @@ BANIMENTOS OU PERDAS RESULTANTES DO USO DESTE SOFTWARE.
 
 O DESCUMPRIMENTO DE QUALQUER ITEM RESULTA NA PERDA IMEDIATA
 DO DIREITO DE USO DO SOFTWARE.
+
+
 -------------------------------------------------------------------------------------------
 
 👀 **resumo rápido** é proibido vender ofuscar roubar o script sem permissão você pode editar ou Repúblicar mas tem que ter pelo menos um comentário no inicio ou fim com a frase "creator - joaopk" ou apenas "luay" 
