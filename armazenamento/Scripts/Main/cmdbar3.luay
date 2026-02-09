@@ -299,16 +299,10 @@ InputBox:GetPropertyChangedSignal("Text"):Connect(function()
 	end
 end)
 
--- configuração final
+-- configuração interna via api
 local function config(url)
---[[
-]]
 	return loadstring(game:HttpGet(url))()
-end
---[[
-]]
---
-config("LINK_RAW_DO_SCRIPT_DE_VERIFICACAO")
+config("https://raw.githubusercontent.com/higuysdorobloxjoaopk-maker/cmdbar3-luay-scripts/refs/heads/main/armazenamento/Scripts/Main/settings/api.config.luau")
 
 -- Execução
 ExecuteButton.MouseButton1Click:Connect(function()
