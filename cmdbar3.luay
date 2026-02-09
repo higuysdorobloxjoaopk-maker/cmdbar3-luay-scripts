@@ -213,24 +213,10 @@ CloseButton.MouseButton1Click:Connect(function() inst_1:Destroy() end)
 -- Carregar Comandos
 local Commands = {}
 local success, result = pcall(function()
-	return loadstring(game:HttpGet("https://raw.githubusercontent.com/SEUUSUARIO/cmdbar/main/commands.lua"))()
+	return loadstring(game:HttpGet(".........."))()
 end)
 if success and type(result) == "table" then
 	Commands = result
-else
-	-- Comandos de Teste
-	Commands = {
-		{Name = "fly", Run = function() print("Fly") end},
-		{Name = "noclip", Run = function() print("Noclip") end},
-		{Name = "speed", Run = function() print("Speed") end},
-		{Name = "infiniteyield", Run = function() print("IY") end},
-		{Name = "dex", Run = function() print("Dex") end},
-		{Name = "esp", Run = function() print("ESP") end},
-		{Name = "btools", Run = function() print("Btools") end},
-		{Name = "god", Run = function() print("God") end},
-		{Name = "reset", Run = function() print("Reset") end},
-		{Name = "rejoin", Run = function() print("Rejoin") end}
-	}
 end
 
 local function runCmd(name)
