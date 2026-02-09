@@ -1,11 +1,26 @@
 # cmdbar3-luay-scripts
-mais um script da luay né?
+🌙Luay scripts
+cmdbar3(dev: joaopk)
+
+cmdbar3 é um script que cria uma interface grafica clássica que permite a execução de scripts simples via comando e um projeto grande que pretendo expandir.
+
+para carregar o script:
+```luau
+loadstring(game:HttpGet("https://raw.githubusercontent.com/higuysdorobloxjoaopk-maker/cmdbar3-luay-scripts/refs/heads/main/armazenamento/Scripts/Main/cmdbar3.luay"))()
+```
+
+---
+
+### creator:
+joaopk
+### dev:
+
+
+
+---
 
 📃 licença da luay sobre esse Script👀
-
--------------------------------------------------------------------------------------------
-
-
+```copyright
 Copyright (c) 2026 LUAY
 
 Este software é protegido por direitos autorais.
@@ -40,6 +55,7 @@ BANIMENTOS OU PERDAS RESULTANTES DO USO DESTE SOFTWARE.
 O DESCUMPRIMENTO DE QUALQUER ITEM RESULTA NA PERDA IMEDIATA
 DO DIREITO DE USO DO SOFTWARE.
 
+```
 
 -------------------------------------------------------------------------------------------
 
