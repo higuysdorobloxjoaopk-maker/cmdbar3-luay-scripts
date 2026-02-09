@@ -11,42 +11,95 @@ return {
 			local hum = char:FindFirstChildWhichIsA("Humanoid")
 			if not hum then return end
 
-			local speed = tonumber(args[1]) or 1
-			if speed < 1 then speed = 1 end
-			if speed > 10 then speed = 10 end
+			local speeds = tonumber(args[1]) or 1
+			if speeds < 1 then speeds = 1 end
+			if speeds > 10 then speeds = 10 end
 
-			if char:FindFirstChild("FLYING") then return end
-			local flag = Instance.new("BoolValue")
-			flag.Name = "FLYING"
-			flag.Parent = char
+			if char:FindFirstChild("NOWE") then return end
+			local nowe = Instance.new("BoolValue")
+			nowe.Name = "NOWE"
+			nowe.Parent = char
+
+			local tpwalking = false
 
 			if char:FindFirstChild("Animate") then
 				char.Animate.Disabled = true
 			end
 
-			hum.PlatformStand = true
+			for _,v in ipairs(hum:GetPlayingAnimationTracks()) do
+				v:AdjustSpeed(0)
+			end
 
-			local root = char:FindFirstChild("HumanoidRootPart")
-			if not root then return end
+			for _,state in ipairs(Enum.HumanoidStateType:GetEnumItems()) do
+				hum:SetStateEnabled(state,false)
+			end
+			hum:ChangeState(Enum.HumanoidStateType.Swimming)
 
-			local bg = Instance.new("BodyGyro")
-			bg.P = 9e4
-			bg.MaxTorque = Vector3.new(9e9,9e9,9e9)
-			bg.CFrame = root.CFrame
-			bg.Parent = root
+			for i = 1, speeds do
+				task.spawn(function()
+					local hb = RunService.Heartbeat
+					tpwalking = true
+					while tpwalking and nowe.Parent and hum.Parent do
+						hb:Wait()
+						if hum.MoveDirection.Magnitude > 0 then
+							char:TranslateBy(hum.MoveDirection)
+						end
+					end
+				end)
+			end
 
-			local bv = Instance.new("BodyVelocity")
-			bv.MaxForce = Vector3.new(9e9,9e9,9e9)
-			bv.Velocity = Vector3.new(0,0,0)
-			bv.Parent = root
+			if hum.RigType == Enum.HumanoidRigType.R6 then
 
-			task.spawn(function()
-				while flag.Parent and hum.Health > 0 do
+				local torso = char:FindFirstChild("Torso")
+				if not torso then return end
+
+				local bg = Instance.new("BodyGyro", torso)
+				bg.P = 9e4
+				bg.MaxTorque = Vector3.new(9e9,9e9,9e9)
+				bg.CFrame = torso.CFrame
+
+				local bv = Instance.new("BodyVelocity", torso)
+				bv.MaxForce = Vector3.new(9e9,9e9,9e9)
+				bv.Velocity = Vector3.new(0,0.1,0)
+
+				hum.PlatformStand = true
+
+				while nowe.Parent and hum.Health > 0 do
 					RunService.RenderStepped:Wait()
+					bv.Velocity = workspace.CurrentCamera.CFrame.LookVector * (speeds * 10)
 					bg.CFrame = workspace.CurrentCamera.CFrame
-					bv.Velocity = hum.MoveDirection * (speed * 12)
 				end
-			end)
+
+				bg:Destroy()
+				bv:Destroy()
+
+			else
+
+				local torso = char:FindFirstChild("UpperTorso")
+				if not torso then return end
+
+				local bg = Instance.new("BodyGyro", torso)
+				bg.P = 9e4
+				bg.MaxTorque = Vector3.new(9e9,9e9,9e9)
+				bg.CFrame = torso.CFrame
+
+				local bv = Instance.new("BodyVelocity", torso)
+				bv.MaxForce = Vector3.new(9e9,9e9,9e9)
+				bv.Velocity = Vector3.new(0,0.1,0)
+
+				hum.PlatformStand = true
+
+				while nowe.Parent and hum.Health > 0 do
+					task.wait()
+					bv.Velocity = workspace.CurrentCamera.CFrame.LookVector * (speeds * 10)
+					bg.CFrame = workspace.CurrentCamera.CFrame
+				end
+
+				bg:Destroy()
+				bv:Destroy()
+			end
+
+			tpwalking = false
 		end
 	},
 
@@ -63,14 +116,18 @@ return {
 			local hum = char:FindFirstChildWhichIsA("Humanoid")
 			if not hum then return end
 
-			if char:FindFirstChild("FLYING") then
-				char.FLYING:Destroy()
+			if char:FindFirstChild("NOWE") then
+				char.NOWE:Destroy()
 			end
 
 			for _,v in ipairs(char:GetDescendants()) do
-				if v:IsA("BodyVelocity") or v:IsA("BodyGyro") then
+				if v:IsA("BodyGyro") or v:IsA("BodyVelocity") then
 					v:Destroy()
 				end
+			end
+
+			for _,state in ipairs(Enum.HumanoidStateType:GetEnumItems()) do
+				hum:SetStateEnabled(state,true)
 			end
 
 			hum.PlatformStand = false
