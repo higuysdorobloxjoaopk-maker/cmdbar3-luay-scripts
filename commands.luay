@@ -1,0 +1,20 @@
+return {
+	{
+		Name = "fly",
+		Run = function()
+			print("Fly ativado")
+		end
+	},
+	{
+		Name = "noclip",
+		Run = function()
+			print("Noclip ativado")
+		end
+	},
+	{
+		Name = "freecam",
+		Run = function()
+			print("Freecam ativado")
+		end
+	}
+}
