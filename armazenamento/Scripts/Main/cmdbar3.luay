@@ -299,11 +299,6 @@ InputBox:GetPropertyChangedSignal("Text"):Connect(function()
 	end
 end)
 
--- configuração interna via api
-local function config(url)
-	return loadstring(game:HttpGet(url))()
-config("https://raw.githubusercontent.com/higuysdorobloxjoaopk-maker/cmdbar3-luay-scripts/refs/heads/main/armazenamento/Scripts/Main/settings/api.config.luau")
-
 -- Execução
 ExecuteButton.MouseButton1Click:Connect(function()
 	runCmd(InputBox.Text:lower():gsub("^;", ""))
