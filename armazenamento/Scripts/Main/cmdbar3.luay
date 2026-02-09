@@ -1,6 +1,11 @@
 -- ==========================================================
--- LUAY cmdbar3
--- (esse objeto mesmo não parecendo tem sim direitos do author pesso pelo menos um comentário de créditos em uma variação ou copia desse script se possível muito obrigado)
+--[[
+█░░ █░█ ▄▀▄ █░█
+█░░ █░█ █▀█ ▀▄▀
+▀▀▀ ▀▀▀ ▀░▀ ░▀░
+  --COMMUNITY--
+]]
+-- cmdbar3 by joaopk
 -- ==========================================================
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
