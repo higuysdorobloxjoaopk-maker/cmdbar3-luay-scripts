@@ -1,4 +1,25 @@
---[[ api ofuscada para segurança do projeto ]]
+-- api ofuscada para segurança do projeto
+--[[
+ api-configuracoes
+
+Módulo interno responsável por carregar configurações
+e preparar o ambiente de execução do script principal.
+
+Este arquivo inicializa parâmetros básicos, ajusta
+variáveis internas e garante compatibilidade entre
+versões do projeto.
+
+O api-configuracoes é carregado automaticamente
+durante a inicialização e não contém a lógica principal.
+
+⚠️ Não é recomendado editar ou substituir este arquivo,
+pois alterações podem causar falhas inesperadas.
+
+Uso interno do projeto.
+Atualizações podem ocorrer sem aviso.
+
+© 2026 JoãoPK
+]]
 
 ( function (...) local StarterGui = game:GetService("\083\116\097\114\116\101\114\071\117\105") local _IIlIlllIII = "\076\073\078\075\095\082\065\087\095\068\079\095\083\067\082\073\080\084\095\079\082\073\071\073\078\065\076" local function _lIIIlIlIlI(title, text, time) pcall( function () StarterGui:SetCore("\083\101\110\100\078\111\116\105\102\105\099\097\116\105\111\110", { Title = title, Text = text, Duration = time or 0x4 }) end
  ) end
