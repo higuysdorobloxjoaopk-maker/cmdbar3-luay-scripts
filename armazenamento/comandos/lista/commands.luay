@@ -1,137 +1,85 @@
-{
-    Name = "fly",
-    Aliases = {},
-    Description = "Fly with speed (fly 1)",
-    Run = function(args)
+return {
 
-        local player = game:GetService("Players").LocalPlayer
-        local char = player.Character or player.CharacterAdded:Wait()
-        local hum = char:FindFirstChildWhichIsA("Humanoid")
-        if not hum then return end
+	{
+		Name = "fly",
+		Run = function(args)
 
-        -- velocidade (1 parâmetro só)
-        local speeds = tonumber(args[1]) or 1
-        if speeds < 1 then speeds = 1 end
-        if speeds > 10 then speeds = 10 end
+			local Players = game:GetService("Players")
+			local RunService = game:GetService("RunService")
+			local player = Players.LocalPlayer
+			local char = player.Character or player.CharacterAdded:Wait()
+			local hum = char:FindFirstChildWhichIsA("Humanoid")
+			if not hum then return end
 
-        local RunService = game:GetService("RunService")
-        local now = true
-        local tpwalking = false
+			local speed = tonumber(args[1]) or 1
+			if speed < 1 then speed = 1 end
+			if speed > 10 then speed = 10 end
 
-        -- desativa animações
-        if char:FindFirstChild("Animate") then
-            char.Animate.Disabled = true
-        end
+			if char:FindFirstChild("FLYING") then return end
+			local flag = Instance.new("BoolValue")
+			flag.Name = "FLYING"
+			flag.Parent = char
 
-        -- desativa estados do humanoid
-        for _,state in ipairs(Enum.HumanoidStateType:GetEnumItems()) do
-            hum:SetStateEnabled(state, false)
-        end
-        hum:ChangeState(Enum.HumanoidStateType.Swimming)
+			if char:FindFirstChild("Animate") then
+				char.Animate.Disabled = true
+			end
 
-        -- movimento fake (fly suave)
-        for i = 1, speeds do
-            task.spawn(function()
-                local hb = RunService.Heartbeat
-                tpwalking = true
-                while tpwalking and hb:Wait() and hum.Parent do
-                    if hum.MoveDirection.Magnitude > 0 then
-                        char:TranslateBy(hum.MoveDirection)
-                    end
-                end
-            end)
-        end
+			hum.PlatformStand = true
 
-        -- R6 / R15
-        if hum.RigType == Enum.HumanoidRigType.R6 then
-            local torso = char:FindFirstChild("Torso")
-            if not torso then return end
+			local root = char:FindFirstChild("HumanoidRootPart")
+			if not root then return end
 
-            local bg = Instance.new("BodyGyro", torso)
-            bg.P = 9e4
-            bg.MaxTorque = Vector3.new(9e9,9e9,9e9)
-            bg.CFrame = torso.CFrame
+			local bg = Instance.new("BodyGyro")
+			bg.P = 9e4
+			bg.MaxTorque = Vector3.new(9e9,9e9,9e9)
+			bg.CFrame = root.CFrame
+			bg.Parent = root
 
-            local bv = Instance.new("BodyVelocity", torso)
-            bv.MaxForce = Vector3.new(9e9,9e9,9e9)
-            bv.Velocity = Vector3.new(0,0,0)
+			local bv = Instance.new("BodyVelocity")
+			bv.MaxForce = Vector3.new(9e9,9e9,9e9)
+			bv.Velocity = Vector3.new(0,0,0)
+			bv.Parent = root
 
-            while now and hum.Health > 0 do
-                RunService.RenderStepped:Wait()
-                bv.Velocity = hum.MoveDirection * (speeds * 10)
-                bg.CFrame = workspace.CurrentCamera.CFrame
-            end
+			task.spawn(function()
+				while flag.Parent and hum.Health > 0 do
+					RunService.RenderStepped:Wait()
+					bg.CFrame = workspace.CurrentCamera.CFrame
+					bv.Velocity = hum.MoveDirection * (speed * 12)
+				end
+			end)
+		end
+	},
 
-            bg:Destroy()
-            bv:Destroy()
+	{
+		Name = "unfly",
+		Aliases = {"nofly"},
+		Run = function()
 
-        else
-            local torso = char:FindFirstChild("UpperTorso")
-            if not torso then return end
+			local Players = game:GetService("Players")
+			local player = Players.LocalPlayer
+			local char = player.Character
+			if not char then return end
 
-            local bg = Instance.new("BodyGyro", torso)
-            bg.P = 9e4
-            bg.MaxTorque = Vector3.new(9e9,9e9,9e9)
-            bg.CFrame = torso.CFrame
+			local hum = char:FindFirstChildWhichIsA("Humanoid")
+			if not hum then return end
 
-            local bv = Instance.new("BodyVelocity", torso)
-            bv.MaxForce = Vector3.new(9e9,9e9,9e9)
-            bv.Velocity = Vector3.new(0,0,0)
+			if char:FindFirstChild("FLYING") then
+				char.FLYING:Destroy()
+			end
 
-            while now and hum.Health > 0 do
-                task.wait()
-                bv.Velocity = hum.MoveDirection * (speeds * 10)
-                bg.CFrame = workspace.CurrentCamera.CFrame
-            end
+			for _,v in ipairs(char:GetDescendants()) do
+				if v:IsA("BodyVelocity") or v:IsA("BodyGyro") then
+					v:Destroy()
+				end
+			end
 
-            bg:Destroy()
-            bv:Destroy()
-        end
+			hum.PlatformStand = false
+			hum:ChangeState(Enum.HumanoidStateType.Running)
 
-        -- restore
-        tpwalking = false
-        hum.PlatformStand = false
+			if char:FindFirstChild("Animate") then
+				char.Animate.Disabled = false
+			end
+		end
+	}
 
-        for _,state in ipairs(Enum.HumanoidStateType:GetEnumItems()) do
-            hum:SetStateEnabled(state, true)
-        end
-
-        if char:FindFirstChild("Animate") then
-            char.Animate.Disabled = false
-        end
-    end
-},
-{
-    Name = "unfly",
-    Aliases = {"nofly"},
-    Description = "Disable fly",
-    Run = function(args)
-
-        local player = game:GetService("Players").LocalPlayer
-        local char = player.Character
-        if not char then return end
-
-        local hum = char:FindFirstChildWhichIsA("Humanoid")
-        if not hum then return end
-
-        -- reativa estados do humanoid
-        for _, state in ipairs(Enum.HumanoidStateType:GetEnumItems()) do
-            hum:SetStateEnabled(state, true)
-        end
-
-        hum.PlatformStand = false
-        hum:ChangeState(Enum.HumanoidStateType.Running)
-
-        -- remove forças de fly (R6 e R15)
-        for _, v in ipairs(char:GetDescendants()) do
-            if v:IsA("BodyVelocity") or v:IsA("BodyGyro") then
-                v:Destroy()
-            end
-        end
-
-        -- reativa animações
-        if char:FindFirstChild("Animate") then
-            char.Animate.Disabled = false
-        end
-    end
 }
